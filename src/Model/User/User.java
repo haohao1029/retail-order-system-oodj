@@ -9,6 +9,7 @@ import Helper.Connection;
 import Model.Session.Session;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class User extends Model {
     private final String DEFAULT_PASSWORD = "password";
     public final String DELIVERY_ROLE = "delivery";
     public final String MANAGING_ROLE = "admin";
+    public final String CUSTOMER_ROLE = "customer";
 
     private int id;
     private String name;
@@ -28,6 +30,8 @@ public class User extends Model {
     // 'admin' / 'delivery'
     private String role;
     private String password;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     private boolean authenticated = false;
 
@@ -123,6 +127,22 @@ public class User extends Model {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+        public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+        public LocalDateTime getUpdateAt() {
+        return updatedAt;
+    }
+
+    public void setUpdateAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     /**
@@ -258,7 +278,7 @@ public class User extends Model {
         return null;
     }
 
-    /**
+    /** 
      *
      * you should not use this method... but for the sake of Abstraction ...
      * yeah

@@ -51,7 +51,7 @@ public class Products implements Creatable, Updatable, Validable, Queryable {
     public Products() {
     }
 
-        public int getID() {
+    public int getID() {
         return ID;
     }
 
@@ -85,7 +85,7 @@ public class Products implements Creatable, Updatable, Validable, Queryable {
         this.createdAt = createdAt;
     }
 
-        public LocalDateTime getUpdateAt() {
+        public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
@@ -156,43 +156,17 @@ public class Products implements Creatable, Updatable, Validable, Queryable {
 
     @Override
     public ArrayList<Products> where(String type, String queryOperator, String queryString) {
-        int i = 0;
-        switch (type.toLowerCase()) {
-            case "id":
-                i = 0;
-                break;
-            case "name":
-                i = 1;
-                break;
-            case "price":
-                i = 2;
-                break;
-            case "balance":
-                i = 3;
-                break;
-            case "createdAt":
-                i = 4;
-                break;
-            case "updatedAt":
-                i = 5;
-                break;
-            default:
-                System.out.println("Type not specificied");
-                break;
-        }
-
-        ArrayList<Products> temp = new ArrayList();
+        ArrayList<Products> temp = new ArrayList<>();
+        int queryID = Integer.valueOf(queryString);
         List<String> fromFile = reader.getFromFile();
-
-        if ((i == 0) || (i == 1)) {
-            int query = Integer.valueOf(queryString);
-            for (int j = 1; j < fromFile.size(); j++) {
-                String[] split = fromFile.get(j).split(",");
-                Double queryInFile = Double.valueOf(split[i]);
-                switch (queryOperator.toLowerCase()) {
-                    case ">":
-                        if (queryInFile > query) {
-                            temp.add(new Products(
+        
+        for (int i = 1; i < fromFile.size(); i++) {
+            String[] split = fromFile.get(i).split(",");
+            int idFile = Integer.valueOf(split[0]);
+            switch (queryOperator) {
+                case ">":
+                    if (idFile > queryID) {
+                                 temp.add(new Products(
                                 Integer.valueOf(split[0]),
                                 String.valueOf(split[1]),
                                 Double.valueOf(split[2]),
@@ -200,11 +174,11 @@ public class Products implements Creatable, Updatable, Validable, Queryable {
                                 LocalDateTime.parse(split[4]),
                                 LocalDateTime.parse(split[5])
                             ));
-                        }
-                        break;
-                    case ">=":
-                        if (queryInFile >= query) {
-                            temp.add(new Products(
+                    }
+                    break;
+                case ">=":
+                    if (idFile >= queryID) {
+                                 temp.add(new Products(
                                 Integer.valueOf(split[0]),
                                 String.valueOf(split[1]),
                                 Double.valueOf(split[2]),
@@ -212,11 +186,11 @@ public class Products implements Creatable, Updatable, Validable, Queryable {
                                 LocalDateTime.parse(split[4]),
                                 LocalDateTime.parse(split[5])
                             ));
-                        }
-                        break;
-                    case "<":
-                        if (queryInFile < query) {
-                            temp.add(new Products(
+                    }
+                    break;
+                case "<":
+                    if (idFile < queryID) {
+                                 temp.add(new Products(
                                 Integer.valueOf(split[0]),
                                 String.valueOf(split[1]),
                                 Double.valueOf(split[2]),
@@ -224,11 +198,11 @@ public class Products implements Creatable, Updatable, Validable, Queryable {
                                 LocalDateTime.parse(split[4]),
                                 LocalDateTime.parse(split[5])
                             ));
-                        }
-                        break;
-                    case "<=":
-                        if (queryInFile <= query) {
-                            temp.add(new Products(
+                    }
+                    break;
+                case "<=":
+                    if (idFile <= queryID) {
+                                 temp.add(new Products(
                                 Integer.valueOf(split[0]),
                                 String.valueOf(split[1]),
                                 Double.valueOf(split[2]),
@@ -236,95 +210,8 @@ public class Products implements Creatable, Updatable, Validable, Queryable {
                                 LocalDateTime.parse(split[4]),
                                 LocalDateTime.parse(split[5])
                             ));
-                        }
-                        break;
-                    case "=":
-                    case "==":
-                    case "===":
-                        if (queryInFile == query) {
-                            temp.add(new Products(
-                                Integer.valueOf(split[0]),
-                                String.valueOf(split[1]),
-                                Double.valueOf(split[2]),
-                                Integer.valueOf(split[3]),
-                                LocalDateTime.parse(split[4]),
-                                LocalDateTime.parse(split[5])
-                            ));
-                        }
-                        break;
-                }
-            }
-        }
-        if ((i == 2) || (i == 3)) {
-            LocalDateTime queryTime = LocalDateTime.parse(queryString);
-            for (int j = 1; j < fromFile.size(); j++) {
-                String[] split = fromFile.get(j).split(",");
-                LocalDateTime fileTime = LocalDateTime.parse(split[i]);
-                switch (queryOperator.toLowerCase()) {
-                    case ">":
-                        if (fileTime.isAfter(queryTime)) {
-                            temp.add(new Products(
-                                Integer.valueOf(split[0]),
-                                String.valueOf(split[1]),
-                                Double.valueOf(split[2]),
-                                Integer.valueOf(split[3]),
-                                LocalDateTime.parse(split[4]),
-                                LocalDateTime.parse(split[5])
-                            ));
-                        }
-
-                        break;
-                    case ">=":
-                        if (fileTime.isAfter(queryTime) || fileTime.isEqual(queryTime)) {
-                            temp.add(new Products(
-                                Integer.valueOf(split[0]),
-                                String.valueOf(split[1]),
-                                Double.valueOf(split[2]),
-                                Integer.valueOf(split[3]),
-                                LocalDateTime.parse(split[4]),
-                                LocalDateTime.parse(split[5])
-                            ));
-                        }
-                        break;
-                    case "<":
-                        if (fileTime.isBefore(queryTime)) {
-                            temp.add(new Products(
-                                Integer.valueOf(split[0]),
-                                String.valueOf(split[1]),
-                                Double.valueOf(split[2]),
-                                Integer.valueOf(split[3]),
-                                LocalDateTime.parse(split[4]),
-                                LocalDateTime.parse(split[5])
-                            ));
-                        }
-                        break;
-                    case "<=":
-                        if (fileTime.isBefore(queryTime) || fileTime.isEqual(queryTime)) {
-                            temp.add(new Products(
-                                Integer.valueOf(split[0]),
-                                String.valueOf(split[1]),
-                                Double.valueOf(split[2]),
-                                Integer.valueOf(split[3]),
-                                LocalDateTime.parse(split[4]),
-                                LocalDateTime.parse(split[5])
-                            ));
-                        }
-                        break;
-                    case "=":
-                    case "==":
-                    case "===":
-                        if (fileTime.isEqual(queryTime)) {
-                            temp.add(new Products(
-                                Integer.valueOf(split[0]),
-                                String.valueOf(split[1]),
-                                Double.valueOf(split[2]),
-                                Integer.valueOf(split[3]),
-                                LocalDateTime.parse(split[4]),
-                                LocalDateTime.parse(split[5])
-                            ));
-                        }
-                        break;
-                }
+                    }
+                    break;
             }
         }
         return temp;
@@ -336,6 +223,8 @@ public class Products implements Creatable, Updatable, Validable, Queryable {
     }
     
     private String format(boolean isCreating) {
+        System.out.print(reader.getNewID() + "," + this.name + "," + this.price);  
+
         return isCreating
                 ? reader.getNewID() + "," + this.name + "," + this.price + "," + this.balance + "," + this.createdAt + "," + this.updatedAt
                 : this.getID() + "," + this.name + "," + this.price + "," + this.balance + "," + this.createdAt + "," + this.updatedAt;

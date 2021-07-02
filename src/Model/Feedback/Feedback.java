@@ -130,6 +130,7 @@ public class Feedback implements Creatable, Deletable, Validable, Queryable {
             return null;
         }
 
+
         ArrayList<Feedback> temp = new ArrayList<>();
         int queryID = Integer.valueOf(queryString);
         List<String> fromFile = reader.getFromFile();

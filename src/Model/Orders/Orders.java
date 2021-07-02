@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Orders;
+package Model.Orders;
 
 import Model.Interface.Creatable;
 import Model.Interface.Updatable;
 import Model.Interface.Queryable;
 import Model.Interface.Validable;
 import Helper.Connection;
+import Model.User.Customers;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +22,15 @@ import java.util.List;
 public class Orders implements Creatable, Updatable, Validable, Queryable {
        
     private int ID;
-    private int customerId;
+    private Customers customer;
     private Double totalAmount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private final Connection reader = new Connection("orders");
-    public Orders(int ID, int customerId, Double totalAmount, LocalDateTime createdAt, LocalDateTime updateAt) {
+    private final Connection reader = new Connection("/orders/orders");
+    
+    public Orders(int ID, Customers customer, Double totalAmount, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.ID = ID;
-        this.customerId = customerId;
+        this.customer = customer;
         this.totalAmount = totalAmount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -40,12 +42,12 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
     public int getID() {
         return ID;
     }
-    public int getCustomerId() {
-        return customerId;
+    public Customers getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCustomerId(Customers customer) {
+        this.customer = customer;
     }
         public Double getTotalAmount() {
         return totalAmount;
@@ -80,7 +82,7 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
             case "id":
                 i = 0;
                 break;
-            case "customerId":
+            case "customer_id":
                 i = 1;
                 break;
             case "totalAmount":
@@ -102,10 +104,11 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
             if (split[i].equals(queryString)) {
                 return new Orders(
                         Integer.valueOf(split[0]),
-                        Integer.valueOf(split[1]),
+                        new Customers().where("user_id", split[1]),
                         Double.valueOf(split[2]),
                         LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4]));
+                        LocalDateTime.parse(split[4])            
+                );
             }
         }
         return null;
@@ -155,7 +158,7 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
                         if (queryInFile > query) {
                             temp.add(new Orders(
                         Integer.valueOf(split[0]),
-                        Integer.valueOf(split[1]),
+                        new Customers().where("user_id", split[1]),
                         Double.valueOf(split[2]),
                         LocalDateTime.parse(split[3]),
                         LocalDateTime.parse(split[4])
@@ -166,7 +169,7 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
                         if (queryInFile >= query) {
                             temp.add(new Orders(
                         Integer.valueOf(split[0]),
-                        Integer.valueOf(split[1]),
+                        new Customers().where("user_id", split[1]),
                         Double.valueOf(split[2]),
                         LocalDateTime.parse(split[3]),
                         LocalDateTime.parse(split[4])
@@ -177,7 +180,7 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
                         if (queryInFile < query) {
                             temp.add(new Orders(
                         Integer.valueOf(split[0]),
-                        Integer.valueOf(split[1]),
+                        new Customers().where("user_id", split[1]),
                         Double.valueOf(split[2]),
                         LocalDateTime.parse(split[3]),
                         LocalDateTime.parse(split[4])
@@ -188,7 +191,7 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
                         if (queryInFile <= query) {
                             temp.add(new Orders(
                         Integer.valueOf(split[0]),
-                        Integer.valueOf(split[1]),
+                        new Customers().where("user_id", split[1]),
                         Double.valueOf(split[2]),
                         LocalDateTime.parse(split[3]),
                         LocalDateTime.parse(split[4])
@@ -201,7 +204,7 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
                         if (queryInFile == query) {
                             temp.add(new Orders(
                         Integer.valueOf(split[0]),
-                        Integer.valueOf(split[1]),
+                        new Customers().where("user_id", split[1]),
                         Double.valueOf(split[2]),
                         LocalDateTime.parse(split[3]),
                         LocalDateTime.parse(split[4])
@@ -221,7 +224,7 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
                         if (fileTime.isAfter(queryTime)) {
                             temp.add(new Orders(
                         Integer.valueOf(split[0]),
-                        Integer.valueOf(split[1]),
+                        new Customers().where("user_id", split[1]),
                         Double.valueOf(split[2]),
                         LocalDateTime.parse(split[3]),
                         LocalDateTime.parse(split[4])
@@ -233,7 +236,7 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
                         if (fileTime.isAfter(queryTime) || fileTime.isEqual(queryTime)) {
                             temp.add(new Orders(
                         Integer.valueOf(split[0]),
-                        Integer.valueOf(split[1]),
+                        new Customers().where("user_id", split[1]),
                         Double.valueOf(split[2]),
                         LocalDateTime.parse(split[3]),
                         LocalDateTime.parse(split[4])
@@ -244,7 +247,7 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
                         if (fileTime.isBefore(queryTime)) {
                             temp.add(new Orders(
                         Integer.valueOf(split[0]),
-                        Integer.valueOf(split[1]),
+                        new Customers().where("user_id", split[1]),
                         Double.valueOf(split[2]),
                         LocalDateTime.parse(split[3]),
                         LocalDateTime.parse(split[4])
@@ -255,7 +258,7 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
                         if (fileTime.isBefore(queryTime) || fileTime.isEqual(queryTime)) {
                             temp.add(new Orders(
                         Integer.valueOf(split[0]),
-                        Integer.valueOf(split[1]),
+                        new Customers().where("user_id", split[1]),
                         Double.valueOf(split[2]),
                         LocalDateTime.parse(split[3]),
                         LocalDateTime.parse(split[4])
@@ -268,7 +271,7 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
                         if (fileTime.isEqual(queryTime)) {
                             temp.add(new Orders(
                         Integer.valueOf(split[0]),
-                        Integer.valueOf(split[1]),
+                        new Customers().where("user_id", split[1]),
                         Double.valueOf(split[2]),
                         LocalDateTime.parse(split[3]),
                         LocalDateTime.parse(split[4])
@@ -296,9 +299,12 @@ public class Orders implements Creatable, Updatable, Validable, Queryable {
     }
     
     private String format(boolean isCreating) {
+        
+        String userId = this.customer == null ? "0" : String.valueOf(this.customer.getID());
+
         return isCreating
-                ? reader.getNewID() + "," + this.customerId + "," + this.totalAmount + "," + this.createdAt + "," + this.updatedAt
-                : this.getID() + "," + this.customerId + "," + this.totalAmount + "," + this.createdAt + "," + this.updatedAt;
+                ? reader.getNewID() + "," + userId + "," + this.totalAmount + "," + this.createdAt + "," + this.updatedAt
+                : this.getID() + "," + userId + "," + this.totalAmount + "," + this.createdAt + "," + this.updatedAt;
     }
 
 }

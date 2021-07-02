@@ -8,6 +8,7 @@ package GUI.Admin;
 import Helper.Connection;
 import Model.Delivery.Delivery;
 import Model.Order.Order;
+import Model.Products.Products;
 import Model.Session.Session;
 import Model.User.DeliveryStaff;
 import java.time.LocalDateTime;
@@ -19,14 +20,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ashwe
  */
-public class ManageDelivery extends javax.swing.JFrame {
+public class CustomerProducts extends javax.swing.JFrame {
 
     DefaultTableModel model;
 
     /**
      * Creates new form ManageDelivery
      */
-    public ManageDelivery() {
+    public CustomerProducts() {
         initComponents();
         this.initTable();
     }
@@ -34,20 +35,14 @@ public class ManageDelivery extends javax.swing.JFrame {
     private void initTable() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
-        ArrayList<Delivery> Deliveries = new Delivery().all();
+        ArrayList<Products> Products = new Products().all();
 
-        for (Delivery delivery : Deliveries) {
+        for (Products product : Products) {
           
-
-            String orderId = (delivery.getOrder() == null) ? "N/A" : String.valueOf(delivery.getOrder().getID());
-            String sendOn = (delivery.getSendOn().equals(LocalDateTime.MIN)) ? "N/A" : delivery.getSendOn().toString();
             model.addRow(new Object[]{
-                delivery.getID(),
-                delivery.getWeight(),
-                delivery.getAddress(),
-                delivery.getStatus(),
-                sendOn,
-                orderId
+                product.getName(),
+                product.getPrice(),
+                product.getBalance()
             });
         }
     }
@@ -92,14 +87,14 @@ public class ManageDelivery extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Weight", "Address", "Status", "send On", "Order ID"
+                "name", "price", "item left"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Double.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, true, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -121,7 +116,7 @@ public class ManageDelivery extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Georgia", 3, 24)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("Delivery Management Section");
+        jLabel9.setText("RETAIL ORDER SYSTEM");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -166,7 +161,7 @@ public class ManageDelivery extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Georgia", 3, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Add Delivery Section");
+        jLabel1.setText("CHECKOUT");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -182,7 +177,7 @@ public class ManageDelivery extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Georgia", 3, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Delivery Data");
+        jLabel2.setText("Product List");
 
         jButton3.setBackground(new java.awt.Color(0, 0, 0));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -225,24 +220,27 @@ public class ManageDelivery extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7))
-                        .addGap(23, 23, 23)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtWeight)
-                                .addComponent(txtAddress)
-                                .addComponent(txtDeliveryStaffID, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(81, 81, 81))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(109, 109, 109)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7))
+                                .addGap(23, 23, 23)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtWeight)
+                                        .addComponent(txtAddress)
+                                        .addComponent(txtDeliveryStaffID, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(81, 81, 81))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(141, 141, 141))))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,7 +256,7 @@ public class ManageDelivery extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -321,21 +319,21 @@ public class ManageDelivery extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Delivery delivery = new Delivery();
-        delivery.setAddress(txtAddress.getText());
-        if (!txtDeliveryStaffID.getText().isEmpty()) {
-            delivery.setOrder(new Order().where("id", txtDeliveryStaffID.getText()));
-        }
-        delivery.setSendBy(new DeliveryStaff().where("id", txtOrderID.getText()));
-        delivery.setSendOn(LocalDateTime.now());//auto generated
-        delivery.setWeight(Double.valueOf(txtWeight.getText()));
-        delivery.setStatus("pending");
-        if (delivery.create()) {
-            JOptionPane.showMessageDialog(null, "Created !");
-        } else {
-            JOptionPane.showMessageDialog(null, "Error !");
-        }
-        new ManageDelivery().setVisible(true);
+    //    Delivery delivery = new Delivery();
+    //    delivery.setAddress(txtAddress.getText());
+    //    if (!txtDeliveryStaffID.getText().isEmpty()) {
+    //        delivery.setOrder(new Order().where("id", txtDeliveryStaffID.getText()));
+    //    }
+    //    delivery.setSendBy(new DeliveryStaff().where("id", txtOrderID.getText()));
+    //    delivery.setSendOn(LocalDateTime.now());//auto generated
+    //    delivery.setWeight(Double.valueOf(txtWeight.getText()));
+    //    delivery.setStatus("pending");
+    //    if (delivery.create()) {
+    //        JOptionPane.showMessageDialog(null, "Created !");
+    //    } else {
+    //        JOptionPane.showMessageDialog(null, "Error !");
+    //    }
+        new CustomerProducts().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -371,7 +369,7 @@ public class ManageDelivery extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error !");
         }
 
-        new ManageDelivery().setVisible(true);
+        new CustomerProducts().setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -395,7 +393,7 @@ public class ManageDelivery extends javax.swing.JFrame {
         if (update) {
             JOptionPane.showMessageDialog(null, "Delivered !");
         }
-        new ManageDelivery().setVisible(true);
+        new CustomerProducts().setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -417,20 +415,21 @@ public class ManageDelivery extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManageDelivery.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerProducts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManageDelivery.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerProducts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManageDelivery.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerProducts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ManageDelivery.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerProducts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ManageDelivery().setVisible(true);
+                new CustomerProducts().setVisible(true);
             }
         });
     }
