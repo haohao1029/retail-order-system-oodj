@@ -130,9 +130,9 @@
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="0">
                     <Column editable="false" title="ID" type="java.lang.Integer"/>
-                    <Column editable="false" title="Name" type="java.lang.String"/>
-                    <Column editable="false" title="Price" type="java.lang.Float"/>
-                    <Column editable="false" title="Balance" type="java.lang.Integer"/>
+                    <Column editable="true" title="Name" type="java.lang.String"/>
+                    <Column editable="true" title="Price" type="java.lang.Float"/>
+                    <Column editable="true" title="Balance" type="java.lang.Integer"/>
                     <Column editable="false" title="CreateAt" type="java.lang.Object"/>
                     <Column editable="true" title="UpdatedAt" type="java.lang.Object"/>
                   </Table>

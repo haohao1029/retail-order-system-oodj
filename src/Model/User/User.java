@@ -20,14 +20,13 @@ import java.util.List;
 public class User extends Model {
 
     private final String DEFAULT_PASSWORD = "password";
-    public final String DELIVERY_ROLE = "delivery";
     public final String MANAGING_ROLE = "admin";
     public final String CUSTOMER_ROLE = "customer";
 
     private int id;
     private String name;
     private String email;
-    // 'admin' / 'delivery'
+    // 'admin' / 'customer'
     private String role;
     private String password;
     private LocalDateTime createdAt;
@@ -61,6 +60,8 @@ public class User extends Model {
      * @param password
      * @param id
      */
+    
+    
     public User(String name, String email, String role, String password, int id) {
         this.name = name;
         this.email = email;
@@ -274,7 +275,6 @@ public class User extends Model {
                 return new User(split[1], split[3], split[4], split[2], Integer.valueOf(split[0]));
             }
         }
-        System.out.println("Hoi Error la ! shame on you copying Laravel");
         return null;
     }
 
@@ -354,6 +354,8 @@ public class User extends Model {
      * @param inputBytes
      * @return
      */
+    
+    // pasword hash
     @Override
     public String getHash(byte[] inputBytes) {
         try {

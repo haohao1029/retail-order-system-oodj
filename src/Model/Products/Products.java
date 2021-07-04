@@ -10,6 +10,7 @@ import Model.Interface.Updatable;
 import Model.Interface.Queryable;
 import Model.Interface.Validable;
 import Helper.Connection;
+import Model.Interface.Deletable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author GJH
  */
-public class Products implements Creatable, Updatable, Validable, Queryable {
+public class Products implements Creatable, Deletable, Updatable, Validable, Queryable {
 
     /**
      *
@@ -150,8 +151,15 @@ public class Products implements Creatable, Updatable, Validable, Queryable {
     @Override
     public boolean update() {
         List<String> fromFile = reader.getFromFile();
-        fromFile.set(this.getID(), this.format(false));
-        return reader.reWrite(reader.listToString(fromFile));
+        for (int i = 1; i < fromFile.size(); i ++ ) {
+            String[] split = fromFile.get(i).split(",");
+            int idFile = Integer.valueOf(split[0]);
+            if (idFile == this.getID()) {
+                fromFile.set(i, this.format(false));
+                return reader.reWrite(reader.listToString(fromFile));
+            }
+        }
+        return false;
     }
 
     @Override
@@ -223,11 +231,18 @@ public class Products implements Creatable, Updatable, Validable, Queryable {
     }
     
     private String format(boolean isCreating) {
-        System.out.print(reader.getNewID() + "," + this.name + "," + this.price);  
 
         return isCreating
                 ? reader.getNewID() + "," + this.name + "," + this.price + "," + this.balance + "," + this.createdAt + "," + this.updatedAt
                 : this.getID() + "," + this.name + "," + this.price + "," + this.balance + "," + this.createdAt + "," + this.updatedAt;
     }
+    @Override
+    public boolean delete() {
+        List<String> fromFile = reader.getFromFile();
+        System.out.println(ID);
+        fromFile.remove(ID);
+        return reader.reWrite(reader.listToString(fromFile));
+    }
+    
 
 }

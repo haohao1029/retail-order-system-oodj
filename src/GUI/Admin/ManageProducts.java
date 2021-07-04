@@ -5,12 +5,12 @@
  */
 package GUI.Admin;
 
-import Model.Feedback.Feedback;
 import Model.Products.Products;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import GUI.User.CreateProduct;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -89,7 +89,7 @@ public class ManageProducts extends javax.swing.JFrame {
                 java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, true, true, true, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -220,7 +220,23 @@ public class ManageProducts extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        //  DELETING
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int selectedRow = jTable1.getSelectedRow();
+
+        String id = model.getValueAt(selectedRow, 0).toString();
+        System.out.println(id);
+        Products p = new Products().where("id", id);
+
+        if (p.delete()) {
+            JOptionPane.showMessageDialog(null, "Deleted!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error!");
+        }
+
+        new ManageProducts().setVisible(true);
+        this.dispose();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -234,7 +250,42 @@ public class ManageProducts extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+        //Update
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        boolean status = true;
+        System.out.println(jTable1.isEditing());
+        if (    jTable1.isEditing()) {
+             JOptionPane.showMessageDialog(null, "Update Error! You are in editing mode!");
+             return;
+        }
+
+        for (int i = 0; i < model.getRowCount(); i++) {
+            //get Data from the t able and convert it
+            int ID = Integer.valueOf(model.getValueAt(i, 0).toString());
+            String name = String.valueOf(model.getValueAt(i, 1).toString());
+            Double price = Double.valueOf(model.getValueAt(i, 2).toString());
+            Integer balance = Integer.valueOf(model.getValueAt(i, 3).toString());
+            LocalDateTime createAt = LocalDateTime.parse(model.getValueAt(i, 4).toString());
+            
+            LocalDateTime updatedAt = LocalDateTime.now();
+
+            //Normally i will validate it before i create/update
+            Products product = new Products(ID, name, price, balance, createAt, updatedAt);
+            System.out.println(product);
+            if (product.update() == false) {
+                JOptionPane.showMessageDialog(null, "There is some problem during process" + product.getID());
+                status = false;
+            }
+        }
+
+        if (status) {
+            JOptionPane.showMessageDialog(null, "All Enty is updated!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Sth Wrong !");
+        }
+
+        new ManageProducts().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
