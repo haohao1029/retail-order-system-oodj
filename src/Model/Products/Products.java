@@ -35,7 +35,7 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
     private Double price;
     private int balance;
     private String name;
-     private LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     private final Connection reader = new Connection("products");
@@ -90,7 +90,7 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
         return updatedAt;
     }
 
-    public void setUpdateAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -120,6 +120,9 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
             case "updatedAt":
                 i = 5;
                 break;
+            case "product_id":
+                i = 0;
+                break;
             default:
                 System.out.println("Type not specificied");
                 break;
@@ -127,14 +130,16 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
         List<String> fromFile = reader.getFromFile();
         for (int j = 1; j < fromFile.size(); j++) {
             String[] split = fromFile.get(j).split(",");
+
             if (split[i].equals(queryString)) {
-                return new Products(
+                Products product = new Products(
                         Integer.valueOf(split[0]),
                         String.valueOf(split[1]),
                         Double.valueOf(split[2]),
                         Integer.valueOf(split[3]),
                         LocalDateTime.parse(split[4]),
                         LocalDateTime.parse(split[5]));
+                return product;
             }
         }
         return null;
@@ -236,6 +241,7 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
                 ? reader.getNewID() + "," + this.name + "," + this.price + "," + this.balance + "," + this.createdAt + "," + this.updatedAt
                 : this.getID() + "," + this.name + "," + this.price + "," + this.balance + "," + this.createdAt + "," + this.updatedAt;
     }
+    
     @Override
     public boolean delete() {
         List<String> fromFile = reader.getFromFile();

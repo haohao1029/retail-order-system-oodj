@@ -6,6 +6,7 @@
 package Model.Session;
 
 import Helper.Connection;
+import Model.User.Customers;
 import Model.User.DeliveryStaff;
 import Model.User.ManagingStaff;
 import Model.User.User;
@@ -35,6 +36,9 @@ public class Session {
 
     public ManagingStaff getManagingStaff() {
         return new ManagingStaff().where("user_id", this.getID());
+    }
+    public Customers getCustomer() {
+        return new Customers().where("user_id", this.getID());
     }
 
     private String getID() {

@@ -52,6 +52,8 @@ public class Customers extends User{
             case "user_id":
                 i = 1;
                 break;
+            case "customer_id":
+                i = 0;
             default:
                 System.out.println("Type not specificied");
                 break;

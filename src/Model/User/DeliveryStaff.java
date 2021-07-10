@@ -73,6 +73,8 @@ public class DeliveryStaff extends User {
     }
 
     public User getUser() {
+              System.out.println(user);
+   
         return user;
     }
 

@@ -221,7 +221,7 @@ public class ManageProducts extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //  DELETING
-                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int selectedRow = jTable1.getSelectedRow();
 
         String id = model.getValueAt(selectedRow, 0).toString();
@@ -253,7 +253,6 @@ public class ManageProducts extends javax.swing.JFrame {
         //Update
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         boolean status = true;
-        System.out.println(jTable1.isEditing());
         if (    jTable1.isEditing()) {
              JOptionPane.showMessageDialog(null, "Update Error! You are in editing mode!");
              return;
@@ -271,7 +270,7 @@ public class ManageProducts extends javax.swing.JFrame {
 
             //Normally i will validate it before i create/update
             Products product = new Products(ID, name, price, balance, createAt, updatedAt);
-            System.out.println(product);
+
             if (product.update() == false) {
                 JOptionPane.showMessageDialog(null, "There is some problem during process" + product.getID());
                 status = false;

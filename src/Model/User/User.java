@@ -150,13 +150,15 @@ public class User extends Model {
      *
      * @return
      */
+    
     public boolean login() {
+        
         if (!(valid.isValidEmail(email))) {
-            System.out.println("Ivalid Email");
+            System.out.println("Invalid Email");
             return false;
         }
         if (!(valid.isValidString(password))) {
-            System.out.println("Ivalid Password");
+            System.out.println("Invalid Password");
             return false;
         }
 

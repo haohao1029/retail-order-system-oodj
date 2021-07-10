@@ -287,7 +287,7 @@ public class CreateDelivery extends javax.swing.JFrame {
             u.setEmail(email);
             u.setName(name);
             u.setPassword(password);
-            u.setRole(u.DELIVERY_ROLE);
+            u.setRole(u.CUSTOMER_ROLE);
             
             if (u.create()) {
                 DeliveryStaff d = new DeliveryStaff();

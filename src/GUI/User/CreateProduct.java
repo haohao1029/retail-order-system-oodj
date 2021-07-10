@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class CreateProduct extends javax.swing.JFrame {
 
+
     /**
      * Creates new form CreateProduct
      */
@@ -259,7 +260,7 @@ public class CreateProduct extends javax.swing.JFrame {
             u.setName(name);
             u.setPrice(price);
             u.setCreatedAt(time);
-            u.setUpdateAt(time);
+            u.setUpdatedAt(time);
             System.out.print(u);
             if (u.create()) {
                JOptionPane.showMessageDialog(null, "Created !");

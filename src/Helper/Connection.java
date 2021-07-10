@@ -43,11 +43,9 @@ public class Connection {
         List<String> data = null;
         try {
             data = Files.readAllLines(PATH);
-            System.out.println(data);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-                    System.out.println(data);
         return data;
     }
 
@@ -97,8 +95,7 @@ public class Connection {
      * @return
      */
     public int getNewID() {
-        System.out.println("getNewId");
-        System.out.println(Integer.valueOf(this.getLastUsedID()) + 1);
+        System.out.println(this.getLastUsedID().equals("ID"));
         return this.getLastUsedID().equals("ID")
                 ? 1
                 : Integer.valueOf(this.getLastUsedID()) + 1;

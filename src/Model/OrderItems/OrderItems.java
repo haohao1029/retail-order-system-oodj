@@ -23,13 +23,14 @@ import java.util.List;
 public class OrderItems implements Creatable, Updatable, Queryable, Validable {
     private int ID;
     private Products product;
+    private int quantity;
     private Orders order;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private final Connection reader = new Connection("products");
+    private final Connection reader = new Connection("orders/orderitems");
 
-    public OrderItems(int ID, Products product, Orders order, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderItems(int ID, Products product, Orders order, int quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
         
     }
     
@@ -41,6 +42,7 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
     }
 
     public int getID() {
+               System.out.println(ID);
         return ID;
     }
 
@@ -60,6 +62,12 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
     }
     public void setOrder(Orders order) {
         this.order = order;
+    }
+    public int getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public LocalDateTime getUpdateAt() {
@@ -102,33 +110,71 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
             case "order_id":
                 i = 2;
                 break;
-            case "createdAt":
+            case "quantity":
                 i = 3;
                 break;
-            case "updatedAt":
+
+            case "createdAt":
                 i = 4;
+                break;
+            case "updatedAt":
+                i = 5;
                 break;
             default:
                 System.out.println("Type not specificied");
                 break;
         }
-                List<String> fromFile = reader.getFromFile();
+        List<String> fromFile = reader.getFromFile();
         for (int j = 1; j < fromFile.size(); j++) {
             String[] split = fromFile.get(j).split(",");
             if (split[i].equals(queryString)) {
-                return new OrderItems(
-                    Integer.valueOf(split[0]),
-                    new Products().where("product_id", split[1]),
-                    new Orders().where("order_id", split[2]),
-                    LocalDateTime.parse(split[3]),
-                    LocalDateTime.parse(split[4])
+                OrderItems orderitem = new OrderItems(
+                        Integer.valueOf(split[0]),
+                        new Products().where("id", split[1]),
+                        new Orders().where("id", split[2]),
+                        Integer.valueOf(split[3]),
+                        LocalDateTime.parse(split[4]),
+                        LocalDateTime.parse(split[5])            
                 );
+
+                return orderitem;   
             }
         }
         return null;
 
     }
+    
+    public ArrayList<OrderItems> getAllByOrder(String id) {
+                        System.out.println(id);
+                        System.out.println("id");
 
+        ArrayList<OrderItems> temp = new ArrayList();
+        List<String> fromFile = reader.getFromFile();
+
+        for (int j = 1; j < fromFile.size(); j++) {
+           String[] split = fromFile.get(j).split(",");
+           if (id.equals(split[2])) {
+                              System.out.println("done");
+                              System.out.println(split[0]);
+               Orders p = new Orders().where("order_id", split[2]);                
+               
+               System.out.println("done");
+               System.out.println(split[0]);
+               OrderItems orderitemss = new OrderItems(
+                    Integer.valueOf(split[0]),
+                    new Products().where("product_id", split[1]),
+                    new Orders().where("order_id", split[2]),
+                    Integer.valueOf(split[3]),
+                    LocalDateTime.parse(split[4]),
+                    LocalDateTime.parse(split[5])
+                );
+                temp.add(orderitemss);  
+            }
+        }
+        
+        return temp;
+    }
+    
     @Override
     public ArrayList<OrderItems> where(String type, String queryOperator, String queryString) {
         int i = 0;
@@ -136,10 +182,10 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
             case "id":
                 i = 0;
                 break;
-            case "product_id":
+            case "customer_id":
                 i = 1;
                 break;
-            case "order_id":
+            case "totalAmount":
                 i = 2;
                 break;
             case "createdAt":
@@ -165,44 +211,49 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
                     case ">":
                         if (queryInFile > query) {
                             temp.add(new OrderItems(
-                                Integer.valueOf(split[0]),
-                                new Products().where("product_id", split[1]),
-                                new Orders().where("order_id", split[2]),
-                                LocalDateTime.parse(split[3]),
-                                LocalDateTime.parse(split[4])
+                    Integer.valueOf(split[0]),
+                    new Products().where("id", split[1]),
+                    new Orders().where("id", split[2]),
+                    Integer.valueOf(split[3]),
+                    LocalDateTime.parse(split[4]),
+                    LocalDateTime.parse(split[5])
                             ));
                         }
                         break;
                     case ">=":
                         if (queryInFile >= query) {
-                            temp.add(new OrderItems(
-                                Integer.valueOf(split[0]),
-                                new Products().where("product_id", split[1]),
-                                new Orders().where("order_id", split[2]),
-                                LocalDateTime.parse(split[3]),
-                                LocalDateTime.parse(split[4])
-                            ));
+                            OrderItems orderitem = new OrderItems(
+                    Integer.valueOf(split[0]),
+                    new Products().where("id", split[1]),
+                    new Orders().where("id", split[2]),
+                    Integer.valueOf(split[3]),
+                    LocalDateTime.parse(split[4]),
+                    LocalDateTime.parse(split[5])
+                            );
+                            temp.add(orderitem);
                         }
                         break;
                     case "<":
                         if (queryInFile < query) {
                             temp.add(new OrderItems(
-                                Integer.valueOf(split[0]),
-                                new Products().where("product_id", split[1]),
-                                new Orders().where("order_id", split[2]),
-                                LocalDateTime.parse(split[3]),
-                                LocalDateTime.parse(split[4])
+                    Integer.valueOf(split[0]),
+                    new Products().where("id", split[1]),
+                    new Orders().where("id", split[2]),
+                    Integer.valueOf(split[3]),
+                    LocalDateTime.parse(split[4]),
+                    LocalDateTime.parse(split[5])
                             ));
                         }
                         break;
                     case "<=":
                         if (queryInFile <= query) {
                             temp.add(new OrderItems(
-                                Integer.valueOf(split[0]),
-                                new Products().where("product_id", split[1]),
-                                new Orders().where("order_id", split[2]),
-                                LocalDateTime.parse(split[3]),
-                                LocalDateTime.parse(split[4])
+                    Integer.valueOf(split[0]),
+                    new Products().where("id", split[1]),
+                    new Orders().where("id", split[2]),
+                    Integer.valueOf(split[3]),
+                    LocalDateTime.parse(split[4]),
+                    LocalDateTime.parse(split[5])
                             ));
                         }
                         break;
@@ -211,11 +262,12 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
                     case "===":
                         if (queryInFile == query) {
                             temp.add(new OrderItems(
-                                Integer.valueOf(split[0]),
-                                new Products().where("product_id", split[1]),
-                                new Orders().where("order_id", split[2]),
-                                LocalDateTime.parse(split[3]),
-                                LocalDateTime.parse(split[4])
+                    Integer.valueOf(split[0]),
+                    new Products().where("id", split[1]),
+                    new Orders().where("id", split[2]),
+                    Integer.valueOf(split[3]),
+                    LocalDateTime.parse(split[4]),
+                    LocalDateTime.parse(split[5])
                             ));
                         }
                         break;
@@ -231,11 +283,12 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
                     case ">":
                         if (fileTime.isAfter(queryTime)) {
                             temp.add(new OrderItems(
-                                Integer.valueOf(split[0]),
-                                new Products().where("product_id", split[1]),
-                                new Orders().where("order_id", split[2]),
-                                LocalDateTime.parse(split[3]),
-                                LocalDateTime.parse(split[4])
+                    Integer.valueOf(split[0]),
+                    new Products().where("id", split[1]),
+                    new Orders().where("id", split[2]),
+                    Integer.valueOf(split[3]),
+                    LocalDateTime.parse(split[4]),
+                    LocalDateTime.parse(split[5])
                             ));
                         }
 
@@ -243,33 +296,36 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
                     case ">=":
                         if (fileTime.isAfter(queryTime) || fileTime.isEqual(queryTime)) {
                             temp.add(new OrderItems(
-                                Integer.valueOf(split[0]),
-                                new Products().where("product_id", split[1]),
-                                new Orders().where("order_id", split[2]),
-                                LocalDateTime.parse(split[3]),
-                                LocalDateTime.parse(split[4])
+                    Integer.valueOf(split[0]),
+                    new Products().where("id", split[1]),
+                    new Orders().where("id", split[2]),
+                    Integer.valueOf(split[3]),
+                    LocalDateTime.parse(split[4]),
+                    LocalDateTime.parse(split[5])
                             ));
                         }
                         break;
                     case "<":
                         if (fileTime.isBefore(queryTime)) {
                             temp.add(new OrderItems(
-                                Integer.valueOf(split[0]),
-                                new Products().where("product_id", split[1]),
-                                new Orders().where("order_id", split[2]),
-                                LocalDateTime.parse(split[3]),
-                                LocalDateTime.parse(split[4])
+                    Integer.valueOf(split[0]),
+                    new Products().where("id", split[1]),
+                    new Orders().where("id", split[2]),
+                    Integer.valueOf(split[3]),
+                    LocalDateTime.parse(split[4]),
+                    LocalDateTime.parse(split[5])
                             ));
                         }
                         break;
                     case "<=":
                         if (fileTime.isBefore(queryTime) || fileTime.isEqual(queryTime)) {
                             temp.add(new OrderItems(
-                                Integer.valueOf(split[0]),
-                                new Products().where("product_id", split[1]),
-                                new Orders().where("order_id", split[2]),
-                                LocalDateTime.parse(split[3]),
-                                LocalDateTime.parse(split[4])
+                    Integer.valueOf(split[0]),
+                    new Products().where("id", split[1]),
+                    new Orders().where("id", split[2]),
+                    Integer.valueOf(split[3]),
+                    LocalDateTime.parse(split[4]),
+                    LocalDateTime.parse(split[5])
                             ));
                         }
                         break;
@@ -278,11 +334,12 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
                     case "===":
                         if (fileTime.isEqual(queryTime)) {
                             temp.add(new OrderItems(
-                                Integer.valueOf(split[0]),
-                                new Products().where("product_id", split[1]),
-                                new Orders().where("order_id", split[2]),
-                                LocalDateTime.parse(split[3]),
-                                LocalDateTime.parse(split[4])
+                    Integer.valueOf(split[0]),
+                    new Products().where("id", split[1]),
+                    new Orders().where("id", split[2]),
+                    Integer.valueOf(split[3]),
+                    LocalDateTime.parse(split[4]),
+                    LocalDateTime.parse(split[5])
                             ));
                         }
                         break;
@@ -290,6 +347,7 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
             }
         }
         return temp;
+
     }
     
 
@@ -297,13 +355,14 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
     public ArrayList<OrderItems> all() {
         return this.where("id", ">=", "1");
     }
-        String orderID = this.order == null ? "0" : String.valueOf(this.order.getID());
-        String productID = this.product == null ? "0" : String.valueOf(this.product.getID());
 
     private String format(boolean isCreating) {
+                String orderID = this.order == null ? "0" : String.valueOf(this.order.getID());
+        String productID = this.product == null ? "0" : String.valueOf(this.product.getID());
+
         return isCreating
-                ? reader.getNewID() + "," + this.product + "," + this.order + "," + this.createdAt + "," + this.updatedAt
-                : this.getID() + "," + this.product + "," + this.order + "," + this.createdAt + "," + this.updatedAt;
+                ? reader.getNewID() + "," + productID + "," + orderID + "," + this.quantity + "," + this.createdAt + "," + this.updatedAt
+                : this.getID() + "," + productID + "," + orderID + "," + this.quantity + "," +  this.createdAt + "," + this.updatedAt;
     }
 
 

@@ -5,6 +5,8 @@
  */
 package retail.order.system;
 
+import GUI.Admin.CustomerProducts;
+import GUI.Admin.ManageOrders;
 import GUI.Admin.ManageProducts;
 import GUI.Login;
 
@@ -18,8 +20,9 @@ public class RETAILORDERSYSTEM {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-         new Login().setVisible(true);
-        //new ManageProducts().setVisible(true);
+        //new Login().setVisible(true);
+        new ManageOrders().setVisible(true);
+        //new CustomerProducts().setVisible(true);
     }
     
 }
