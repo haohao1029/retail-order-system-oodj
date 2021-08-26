@@ -50,7 +50,7 @@ public class Orders implements Updatable, Validable, Queryable {
     public void setCustomer(Customers customer) {
         this.customer = customer;
     }
-        public Double getTotalAmount() {
+    public Double getTotalAmount() {
         return totalAmount;
     }
 

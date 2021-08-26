@@ -5,7 +5,7 @@
  */
 package GUI;
 
-import GUI.Admin.Admin;
+import GUI.Admin.Dashboard;
 import GUI.Admin.CreateFeedback;
 import GUI.Admin.ManageFeedback;
 import GUI.Admin.CustomerProducts;
@@ -160,7 +160,7 @@ public class Login extends javax.swing.JFrame {
             u.setPassword(password);
             if (u.login()) {
                 if (u.isAdmin()) {
-                    new Admin().setVisible(true);
+                    new Dashboard().setVisible(true);
                     this.dispose();
                 } else {
                     //TODO

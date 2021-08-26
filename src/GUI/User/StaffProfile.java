@@ -5,7 +5,6 @@
  */
 package GUI.User;
 
-import GUI.Admin.Staff;
 import Model.Session.Session;
 import Model.User.User;
 import javax.swing.JOptionPane;
@@ -270,7 +269,7 @@ public class StaffProfile extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        new Staff().setVisible(true);
+        new UserDirectory().setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_jButton5ActionPerformed

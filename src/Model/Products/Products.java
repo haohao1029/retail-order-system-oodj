@@ -139,6 +139,11 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
                         Integer.valueOf(split[3]),
                         LocalDateTime.parse(split[4]),
                         LocalDateTime.parse(split[5]));
+//                System.out.println(split[1]);
+//                System.out.println(split[2]);
+//                System.out.println(split[3]);
+//                System.out.println(split[4]);
+//                System.out.println(split[5]);
                 return product;
             }
         }

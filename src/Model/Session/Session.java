@@ -7,8 +7,7 @@ package Model.Session;
 
 import Helper.Connection;
 import Model.User.Customers;
-import Model.User.DeliveryStaff;
-import Model.User.ManagingStaff;
+import Model.User.Admin;
 import Model.User.User;
 
 /**
@@ -30,12 +29,8 @@ public class Session {
         return new User().where("id", this.getID());
     }
 
-    public DeliveryStaff getDeliveryStaff() {
-        return new DeliveryStaff().where("user_id", this.getID());
-    }
-
-    public ManagingStaff getManagingStaff() {
-        return new ManagingStaff().where("user_id", this.getID());
+    public Admin getManagingStaff() {
+        return new Admin().where("user_id", this.getID());
     }
     public Customers getCustomer() {
         return new Customers().where("user_id", this.getID());

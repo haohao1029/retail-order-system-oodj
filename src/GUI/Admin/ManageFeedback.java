@@ -239,7 +239,7 @@ public class ManageFeedback extends javax.swing.JFrame {
         int selectedRow = jTable1.getSelectedRow();
 
         String id = model.getValueAt(selectedRow, 0).toString();
-        System.out.println(id);
+
         Feedback f = new Feedback().where("id", id);
 
         if (f.delete()) {
@@ -254,7 +254,7 @@ public class ManageFeedback extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new Staff().setVisible(true);
+        new Dashboard().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 

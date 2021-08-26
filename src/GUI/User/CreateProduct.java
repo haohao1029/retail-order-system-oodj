@@ -242,7 +242,7 @@ public class CreateProduct extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBalanceActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new StaffDirectory().setVisible(true);
+        new ManageProducts().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 

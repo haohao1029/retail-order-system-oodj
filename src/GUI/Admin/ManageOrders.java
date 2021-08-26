@@ -250,7 +250,7 @@ public class ManageOrders extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new Admin().setVisible(true);
+        new Dashboard().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -261,15 +261,21 @@ public class ManageOrders extends javax.swing.JFrame {
 
         String id = orderModel.getValueAt(selectedRow, 0).toString();
         Orders p = new Orders().where("id", id);
-        
-        ArrayList<OrderItems> orderItems = new OrderItems().all();
-        orderItems.forEach((orderitem) -> {
+        System.out.println(p.getTotalAmount());
+        //ArrayList<OrderItems> orderItems = new OrderItems().all();
+        ArrayList<OrderItems> orderItemsbyOrderid = new OrderItems().getAllByOrder(id);
+        orderItemsbyOrderid.forEach((orderitem) -> {
+            System.out.println("orderItemsbyOrderid");
+            System.out.println(orderitem.getID());
+            System.out.println(orderitem.getQuantity());
+        });
+                orderItemsbyOrderid.forEach((orderitem) -> {
             orderItemModel.addRow(new Object[]{
                 orderitem.getID(),
                 orderitem.getProduct().getName(),
                 orderitem.getQuantity(),
                 orderitem.getCreatedAt(),
-                orderitem.getUpdateAt()
+                orderitem.getUpdateAt(),
             });
         });
 

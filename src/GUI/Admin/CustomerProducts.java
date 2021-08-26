@@ -11,7 +11,6 @@ import Model.OrderItems.OrderItems;
 import Model.Products.Products;
 import Model.Session.Session;
 import Model.User.Customers;
-import Model.User.DeliveryStaff;
 import Model.User.User;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -290,8 +289,8 @@ public class CustomerProducts extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
     
-        int cartRowCount = jTable1.getRowCount();
-        int cartColumnCount = jTable1.getColumnCount();
+        int cartRowCount = jTable2.getRowCount();
+        int cartColumnCount = jTable2.getColumnCount();
         LocalDateTime createdAt = LocalDateTime.now();
         LocalDateTime updatedAt = LocalDateTime.now();
         Customers customer= new Session().getCustomer();  
@@ -311,11 +310,9 @@ public class CustomerProducts extends javax.swing.JFrame {
                 System.out.println("order");
                 int as = 4;
 
-                String orderIDString = Integer.toString(orderID);
+                String orderIDString = Integer.toString(orderID - 1);
                 order = new Orders().where("id", orderIDString);
-
         for (int i = 0; i < cartRowCount; i++) {
-                
                 OrderItems orderitem = new OrderItems();
                 Products product = new Products().where("id", jTable2.getValueAt(i, 0).toString());
                 String productName = product.getName();
@@ -331,7 +328,6 @@ public class CustomerProducts extends javax.swing.JFrame {
                 orderitem.setQuantity(quantity);
                 orderitem.setOrder(order);
                 orderitem.create();
-                
                 product = new Products(
                         Integer.parseInt(jTable2.getValueAt(i, 0).toString()),
                         productName, 
@@ -340,6 +336,7 @@ public class CustomerProducts extends javax.swing.JFrame {
                         productCreatedAt, 
                         productUpdatedAt
                 );
+
                 product.update();
         }
         
