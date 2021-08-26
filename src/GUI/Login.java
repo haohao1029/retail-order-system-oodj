@@ -8,6 +8,7 @@ package GUI;
 import GUI.Admin.Dashboard;
 import GUI.Admin.CreateFeedback;
 import GUI.Admin.ManageFeedback;
+import GUI.Register;
 import GUI.Admin.CustomerProducts;
 
 import Helper.GUIHelper;
@@ -46,10 +47,10 @@ public class Login extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
+        btnLogin2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 153, 153));
-        setPreferredSize(new java.awt.Dimension(1000, 650));
 
         btnLogin.setText("Login");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -85,6 +86,13 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        btnLogin2.setText("Register");
+        btnLogin2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogin2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,7 +107,10 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(97, 97, 97)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnLogin)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnLogin)
+                        .addGap(141, 141, 141)
+                        .addComponent(btnLogin2))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
                         .addComponent(txtPassword)))
@@ -117,7 +128,7 @@ public class Login extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(67, 67, 67)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -127,8 +138,10 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(97, 97, 97)
-                .addComponent(btnLogin)
-                .addGap(96, 96, 96)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLogin)
+                    .addComponent(btnLogin2))
+                .addGap(221, 221, 221)
                 .addComponent(jButton1)
                 .addGap(91, 91, 91))
         );
@@ -165,7 +178,7 @@ public class Login extends javax.swing.JFrame {
                 } else {
                     //TODO
                     new CustomerProducts().setVisible(true);
-                    //Bring to Delivery Panel
+                    this.dispose();
                 }
             } else {
                 help.showMessageBox("Email or Password do not match");
@@ -184,6 +197,11 @@ public class Login extends javax.swing.JFrame {
         new CreateFeedback().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnLogin2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogin2ActionPerformed
+        new Register().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnLogin2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -222,6 +240,7 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnLogin2;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

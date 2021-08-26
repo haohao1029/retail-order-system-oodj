@@ -82,7 +82,7 @@ public class UserDirectory extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBackground(new java.awt.Color(153, 0, 153));
+        jPanel2.setBackground(new java.awt.Color(0, 153, 153));
 
         jButton2.setBackground(new java.awt.Color(0, 153, 0));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -104,7 +104,7 @@ public class UserDirectory extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setBackground(new java.awt.Color(153, 0, 153));
+        jTable1.setBackground(new java.awt.Color(0, 153, 153));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -130,7 +130,7 @@ public class UserDirectory extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.setBackground(new java.awt.Color(102, 0, 102));
+        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
 
         jLabel1.setFont(new java.awt.Font("Georgia", 3, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));

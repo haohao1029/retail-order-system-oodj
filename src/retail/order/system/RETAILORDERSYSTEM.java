@@ -21,7 +21,7 @@ public class RETAILORDERSYSTEM {
      */
     public static void main(String[] args) {
         new Login().setVisible(true);
-        new ManageOrders().setVisible(true);
+        //new ManageOrders().setVisible(true);
     }
     
 }
