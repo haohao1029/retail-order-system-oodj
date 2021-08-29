@@ -5,6 +5,7 @@
  */
 package Model.OrderItems;
 
+import Helper.BinarySearch;
 import Model.Interface.Creatable;
 import Model.Interface.Updatable;
 import Model.Interface.Queryable;
@@ -27,17 +28,18 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
     private Orders order;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private boolean isDeleted;
 
     private final Connection reader = new Connection("orders/orderitems");
 
-    public OrderItems(int ID, Products product, Orders order, int quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderItems(int ID, Products product, Orders order, int quantity, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted) {
         this.ID = ID;
         this.product = product;
         this.order = order;
         this.quantity = quantity;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-
+        this.isDeleted = isDeleted;
     }
     
     public OrderItems() {
@@ -82,10 +84,16 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
     public void setUpdateAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public boolean getIsDeleted() {
+        return isDeleted;
+    }
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
     public Connection getReader() {
         return reader;
     }
-
     @Override
     public boolean create() {
         List<String> fromFile = reader.getFromFile();
@@ -125,28 +133,30 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
             case "updatedAt":
                 i = 5;
                 break;
+            case "isDeleted":
+                i = 6;
+                break;
             default:
                 System.out.println("Type not specificied");
                 break;
         }
         List<String> fromFile = reader.getFromFile();
-        for (int j = 1; j < fromFile.size(); j++) {
-            String[] split = fromFile.get(j).split(",");
-            if (split[i].equals(queryString)) {
-                OrderItems orderitem = new OrderItems(
-                        Integer.valueOf(split[0]),
-                        new Products().where("id", split[1]),
-                        new Orders().where("id", split[2]),
-                        Integer.valueOf(split[3]),
-                        LocalDateTime.parse(split[4]),
-                        LocalDateTime.parse(split[5])            
+        
+        String[] result = new BinarySearch().bsearch(fromFile, 1, fromFile.size() - 1, Integer.parseInt(queryString), i);
+        if (result == null) {
+            return null;
+        }        
+        return new OrderItems(
+                        Integer.valueOf(result[0]),
+                        new Products().where("id", result[1]),
+                        new Orders().where("id", result[2]),
+                        Integer.valueOf(result[3]),
+                        LocalDateTime.parse(result[4]),
+                        LocalDateTime.parse(result[5]) ,
+                        Boolean.parseBoolean(result[6])
                 );
 
-                return orderitem;   
-            }
-        }
-        return null;
-
+       
     }
     
     public ArrayList<OrderItems> getAllByOrder(String id) {
@@ -155,18 +165,17 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
 
         for (int j = 1; j < fromFile.size(); j++) {
            String[] split = fromFile.get(j).split(",");
-           if (id.equals(split[2])) {
-                              System.out.println("done");
-                              System.out.println(split[0]);
+           if (id.equals(split[2]) && !Boolean.parseBoolean(split[6])) {
                Orders p = new Orders().where("order_id", split[2]);                
                
                OrderItems orderitemss = new OrderItems(
-                    Integer.valueOf(split[0]),
-                    new Products().where("product_id", split[1]),
-                    new Orders().where("order_id", split[2]),
-                    Integer.valueOf(split[3]),
-                    LocalDateTime.parse(split[4]),
-                    LocalDateTime.parse(split[5])
+                        Integer.valueOf(split[0]),
+                        new Products().where("id", split[1]),
+                        new Orders().where("id", split[2]),
+                        Integer.valueOf(split[3]),
+                        LocalDateTime.parse(split[4]),
+                        LocalDateTime.parse(split[5]) ,
+                        Boolean.parseBoolean(split[6])
                 );
                 temp.add(orderitemss);  
             }
@@ -197,6 +206,9 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
             case "updatedAt":
                 i = 5;
                 break;
+            case "isDeleted":
+                i = 6;
+                break;                
             default:
                 System.out.println("Type not specificied");
                 break;
@@ -210,74 +222,79 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
                 System.out.println(fromFile.get(j));
                 String[] split = fromFile.get(j).split(",");
                 Double queryInFile = Double.valueOf(split[i]);
-                switch (queryOperator.toLowerCase()) {
-                    case ">":
-                        if (queryInFile > query) {
-                            temp.add(new OrderItems(
+                if (!Boolean.parseBoolean(split[6])) {
+                    switch (queryOperator.toLowerCase()) {
+                        case ">":
+                            if (queryInFile > query) {
+                                temp.add(new OrderItems(
                             Integer.valueOf(split[0]),
                             new Products().where("id", split[1]),
                             new Orders().where("id", split[2]),
                             Integer.valueOf(split[3]),
                             LocalDateTime.parse(split[4]),
-                            LocalDateTime.parse(split[5])
-                            ));
-                        }
-                        break;
-                    case ">=":
-                        if (queryInFile >= query) {
-                            OrderItems orderitem = new OrderItems(
+                            LocalDateTime.parse(split[5]) ,
+                            Boolean.parseBoolean(split[6])
+                                ));
+                            }
+                            break;
+                        case ">=":
+                            if (queryInFile >= query) {
+                                OrderItems orderitem = new OrderItems(
                             Integer.valueOf(split[0]),
                             new Products().where("id", split[1]),
                             new Orders().where("id", split[2]),
                             Integer.valueOf(split[3]),
                             LocalDateTime.parse(split[4]),
-                            LocalDateTime.parse(split[5])
-                            );
-                            temp.add(orderitem);
-                        }
-                        break;
-                    case "<":
-                        if (queryInFile < query) {
-                            temp.add(new OrderItems(
-                    Integer.valueOf(split[0]),
-                    new Products().where("id", split[1]),
-                    new Orders().where("id", split[2]),
-                    Integer.valueOf(split[3]),
-                    LocalDateTime.parse(split[4]),
-                    LocalDateTime.parse(split[5])
-                            ));
-                        }
-                        break;
-                    case "<=":
-                        if (queryInFile <= query) {
-                            temp.add(new OrderItems(
-                    Integer.valueOf(split[0]),
-                    new Products().where("id", split[1]),
-                    new Orders().where("id", split[2]),
-                    Integer.valueOf(split[3]),
-                    LocalDateTime.parse(split[4]),
-                    LocalDateTime.parse(split[5])
-                            ));
-                        }
-                        break;
-                    case "=":
-                    case "==":
-                    case "===":
-                        if (queryInFile == query) {
-                            temp.add(new OrderItems(
-                    Integer.valueOf(split[0]),
-                    new Products().where("id", split[1]),
-                    new Orders().where("id", split[2]),
-                    Integer.valueOf(split[3]),
-                    LocalDateTime.parse(split[4]),
-                    LocalDateTime.parse(split[5])
-                            ));
-                        }
-                        break;
+                            LocalDateTime.parse(split[5]) ,
+                            Boolean.parseBoolean(split[6])
+                                );
+                                temp.add(orderitem);
+                            }
+                            break;
+                        case "<":
+                            if (queryInFile < query) {
+                                temp.add(new OrderItems(
+                            Integer.valueOf(split[0]),
+                            new Products().where("id", split[1]),
+                            new Orders().where("id", split[2]),
+                            Integer.valueOf(split[3]),
+                            LocalDateTime.parse(split[4]),
+                            LocalDateTime.parse(split[5]) ,
+                            Boolean.parseBoolean(split[6])
+                                ));
+                            }
+                            break;
+                        case "<=":
+                            if (queryInFile <= query) {
+                                temp.add(new OrderItems(
+                            Integer.valueOf(split[0]),
+                            new Products().where("id", split[1]),
+                            new Orders().where("id", split[2]),
+                            Integer.valueOf(split[3]),
+                            LocalDateTime.parse(split[4]),
+                            LocalDateTime.parse(split[5]) ,
+                            Boolean.parseBoolean(split[6])
+                                ));
+                            }
+                            break;
+                        case "=":
+                        case "==":
+                        case "===":
+                            if (queryInFile == query) {
+                                temp.add(new OrderItems(
+                            Integer.valueOf(split[0]),
+                            new Products().where("id", split[1]),
+                            new Orders().where("id", split[2]),
+                            Integer.valueOf(split[3]),
+                            LocalDateTime.parse(split[4]),
+                            LocalDateTime.parse(split[5]) ,
+                            Boolean.parseBoolean(split[6])
+                                ));
+                            }
+                            break;
+                    }
                 }
-            }
-        
-
+        }
         return temp;
 
     }
@@ -291,12 +308,9 @@ public class OrderItems implements Creatable, Updatable, Queryable, Validable {
     private String format(boolean isCreating) {
         String orderID = this.order == null ? "0" : String.valueOf(this.order.getID());
         String productID = this.product == null ? "0" : String.valueOf(this.product.getID());
-        System.out.println(isCreating);
-        System.out.println(orderID);
-        System.out.println(reader.getNewID() + "," + productID + "," + orderID + "," + this.quantity + "," + this.createdAt + "," + this.updatedAt);
         return isCreating
-                ? reader.getNewID() + "," + productID + "," + orderID + "," + this.quantity + "," + this.createdAt + "," + this.updatedAt
-                : this.getID() + "," + productID + "," + orderID + "," + this.quantity + "," +  this.createdAt + "," + this.updatedAt;
+                ? reader.getNewID() + "," + productID + "," + orderID + "," + this.quantity + "," + this.createdAt + "," + this.updatedAt + "," + this.isDeleted
+                : this.getID() + "," + productID + "," + orderID + "," + this.quantity + "," +  this.createdAt + "," + this.updatedAt + "," + this.isDeleted;
     }
 
 

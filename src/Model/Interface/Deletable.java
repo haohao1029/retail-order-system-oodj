@@ -7,7 +7,7 @@ package Model.Interface;
 
 /**
  *
- * @author ashweeen
+ * @author GJH
  */
 public interface Deletable {
  /**

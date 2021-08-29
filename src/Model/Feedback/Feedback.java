@@ -5,6 +5,7 @@
  */
 package Model.Feedback;
 
+import Helper.BinarySearch;
 import Model.Interface.Creatable;
 import Model.Interface.Queryable;
 import Model.Interface.Deletable;
@@ -15,7 +16,7 @@ import java.util.List;
 
 /**
  *
- * @author CCK
+ * @author GJH
  */
 public class Feedback implements Creatable, Deletable, Validable, Queryable {
 
@@ -104,14 +105,14 @@ public class Feedback implements Creatable, Deletable, Validable, Queryable {
         }
 
         List<String> fromFile = reader.getFromFile();
-        for (String element : fromFile) {
-            String[] split = element.split(",");
-            if (split[i].equals(queryString)) {
-                return new Feedback(Integer.valueOf(split[0]), split[1]);
-            }
-        }
-        return null;
+        String[] result = new BinarySearch().bsearch(fromFile, 1, fromFile.size() - 1, Integer.parseInt(queryString), i);
+        if (result == null) {
+            return null;
+        }        
+        return new Feedback(Integer.valueOf(result[0]), result[1]);
     }
+
+    
 
     /**
      *

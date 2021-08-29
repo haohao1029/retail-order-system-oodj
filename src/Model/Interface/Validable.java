@@ -9,7 +9,7 @@ import Helper.Validator;
 
 /**
  *
- * @author CCK
+ * @author GJH
  */
 public interface Validable {
 

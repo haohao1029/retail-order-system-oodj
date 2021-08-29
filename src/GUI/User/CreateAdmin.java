@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author ashwe
+ * @author GJH
  */
 public class CreateAdmin extends javax.swing.JFrame {
 

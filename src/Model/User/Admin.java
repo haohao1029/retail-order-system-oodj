@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  *
- * @author CCK
+ * @author GJH
  */
 public class Admin extends User {
 

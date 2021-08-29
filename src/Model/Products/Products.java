@@ -5,6 +5,7 @@
  */
 package Model.Products;
 
+import Helper.BinarySearch;
 import Model.Interface.Creatable;
 import Model.Interface.Updatable;
 import Model.Interface.Queryable;
@@ -29,6 +30,7 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
      * @param balance
      * @param createdAt
      * @param updatedAt
+     * @param isDeleted
      */
     
     private int ID;
@@ -37,16 +39,20 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
     private String name;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private boolean isDeleted;
+    private int sales;
 
     private final Connection reader = new Connection("products");
 
-    public Products(int ID, String name, Double price, int balance, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Products(int ID, String name, Double price, int balance, LocalDateTime createdAt, LocalDateTime updatedAt, int sales, boolean isDeleted) {
         this.ID = ID;
         this.name = name;
         this.price = price;
         this.balance = balance;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.sales = sales;
+        this.isDeleted = isDeleted;
     }
     
     public Products() {
@@ -74,9 +80,19 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
         return balance;
     }
 
+    
+        public boolean getIsdeleted() {
+        return isDeleted;
+    }
+
+    public void setSales(int sales) {
+        this.sales = sales;
+    }
+    
     public void setBalance(int balance) {
         this.balance = balance;
     }
+
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -98,6 +114,13 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
         return reader;
     }
     
+    public int getSales() {
+        return sales;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
     @Override
     public Products where(String type, String queryString) {
         int i = 0;
@@ -128,26 +151,20 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
                 break;
         }
         List<String> fromFile = reader.getFromFile();
-        for (int j = 1; j < fromFile.size(); j++) {
-            String[] split = fromFile.get(j).split(",");
-
-            if (split[i].equals(queryString)) {
-                Products product = new Products(
-                        Integer.valueOf(split[0]),
-                        String.valueOf(split[1]),
-                        Double.valueOf(split[2]),
-                        Integer.valueOf(split[3]),
-                        LocalDateTime.parse(split[4]),
-                        LocalDateTime.parse(split[5]));
-//                System.out.println(split[1]);
-//                System.out.println(split[2]);
-//                System.out.println(split[3]);
-//                System.out.println(split[4]);
-//                System.out.println(split[5]);
-                return product;
-            }
-        }
-        return null;
+        String[] result = new BinarySearch().bsearch(fromFile, 1, fromFile.size() - 1, Integer.parseInt(queryString), i);
+        if (result == null) {
+            return null;
+        }        
+        return new Products(
+                        Integer.valueOf(result[0]),
+                        String.valueOf(result[1]),
+                        Double.valueOf(result[2]),
+                        Integer.valueOf(result[3]),
+                        LocalDateTime.parse(result[4]),
+                        LocalDateTime.parse(result[5]),
+                        Integer.valueOf(result[6]),
+                        Boolean.parseBoolean(result[7])
+                );
     }
 
     @Override
@@ -164,7 +181,7 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
         for (int i = 1; i < fromFile.size(); i ++ ) {
             String[] split = fromFile.get(i).split(",");
             int idFile = Integer.valueOf(split[0]);
-            if (idFile == this.getID()) {
+            if (idFile == this.getID()) { 
                 fromFile.set(i, this.format(false));
                 return reader.reWrite(reader.listToString(fromFile));
             }
@@ -181,55 +198,65 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
         for (int i = 1; i < fromFile.size(); i++) {
             String[] split = fromFile.get(i).split(",");
             int idFile = Integer.valueOf(split[0]);
-            switch (queryOperator) {
-                case ">":
-                    if (idFile > queryID) {
-                                 temp.add(new Products(
-                                Integer.valueOf(split[0]),
-                                String.valueOf(split[1]),
-                                Double.valueOf(split[2]),
-                                Integer.valueOf(split[3]),
-                                LocalDateTime.parse(split[4]),
-                                LocalDateTime.parse(split[5])
-                            ));
-                    }
-                    break;
-                case ">=":
-                    if (idFile >= queryID) {
-                                 temp.add(new Products(
-                                Integer.valueOf(split[0]),
-                                String.valueOf(split[1]),
-                                Double.valueOf(split[2]),
-                                Integer.valueOf(split[3]),
-                                LocalDateTime.parse(split[4]),
-                                LocalDateTime.parse(split[5])
-                            ));
-                    }
-                    break;
-                case "<":
-                    if (idFile < queryID) {
-                                 temp.add(new Products(
-                                Integer.valueOf(split[0]),
-                                String.valueOf(split[1]),
-                                Double.valueOf(split[2]),
-                                Integer.valueOf(split[3]),
-                                LocalDateTime.parse(split[4]),
-                                LocalDateTime.parse(split[5])
-                            ));
-                    }
-                    break;
-                case "<=":
-                    if (idFile <= queryID) {
-                                 temp.add(new Products(
-                                Integer.valueOf(split[0]),
-                                String.valueOf(split[1]),
-                                Double.valueOf(split[2]),
-                                Integer.valueOf(split[3]),
-                                LocalDateTime.parse(split[4]),
-                                LocalDateTime.parse(split[5])
-                            ));
-                    }
-                    break;
+            if (!Boolean.parseBoolean(split[7])) {
+                switch (queryOperator) {
+                    case ">":
+                        if (idFile > queryID) {
+                                     temp.add(new Products(
+                                    Integer.valueOf(split[0]),
+                                    String.valueOf(split[1]),
+                                    Double.valueOf(split[2]),
+                                    Integer.valueOf(split[3]),
+                                    LocalDateTime.parse(split[4]),
+                                    LocalDateTime.parse(split[5]),
+                                    Integer.valueOf(split[6]),
+                                    Boolean.parseBoolean(split[7])
+                                ));
+                        }
+                        break;
+                    case ">=":
+                        if (idFile >= queryID) {
+                                     temp.add(new Products(
+                            Integer.valueOf(split[0]),
+                            String.valueOf(split[1]),
+                            Double.valueOf(split[2]),
+                            Integer.valueOf(split[3]),
+                            LocalDateTime.parse(split[4]),
+                            LocalDateTime.parse(split[5]),
+                            Integer.valueOf(split[6]),
+                            Boolean.parseBoolean(split[7])
+                                ));
+                        }
+                        break;
+                    case "<":
+                        if (idFile < queryID) {
+                                     temp.add(new Products(
+                            Integer.valueOf(split[0]),
+                            String.valueOf(split[1]),
+                            Double.valueOf(split[2]),
+                            Integer.valueOf(split[3]),
+                            LocalDateTime.parse(split[4]),
+                            LocalDateTime.parse(split[5]),
+                            Integer.valueOf(split[6]),
+                            Boolean.parseBoolean(split[7])
+                                ));
+                        }
+                        break;
+                    case "<=":
+                        if (idFile <= queryID) {
+                                     temp.add(new Products(
+                                    Integer.valueOf(split[0]),
+                                    String.valueOf(split[1]),
+                                    Double.valueOf(split[2]),
+                                    Integer.valueOf(split[3]),
+                                    LocalDateTime.parse(split[4]),
+                                    LocalDateTime.parse(split[5]),
+                                    Integer.valueOf(split[6]),
+                                    Boolean.parseBoolean(split[7])
+                                ));
+                        }
+                        break;
+                }
             }
         }
         return temp;
@@ -243,8 +270,8 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
     private String format(boolean isCreating) {
 
         return isCreating
-                ? reader.getNewID() + "," + this.name + "," + this.price + "," + this.balance + "," + this.createdAt + "," + this.updatedAt
-                : this.getID() + "," + this.name + "," + this.price + "," + this.balance + "," + this.createdAt + "," + this.updatedAt;
+                ? reader.getNewID() + "," + this.name + "," + this.price + "," + this.balance + "," + this.createdAt + "," + this.updatedAt + "," + this.sales + "," + this.isDeleted
+                : this.getID() + "," + this.name + "," + this.price + "," + this.balance + "," + this.createdAt + "," + this.updatedAt + "," + this.sales + "," + this.isDeleted;
     }
     
     @Override
@@ -254,6 +281,4 @@ public class Products implements Creatable, Deletable, Updatable, Validable, Que
         fromFile.remove(ID);
         return reader.reWrite(reader.listToString(fromFile));
     }
-    
-
 }

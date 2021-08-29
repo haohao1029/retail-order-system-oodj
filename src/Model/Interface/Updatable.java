@@ -7,7 +7,7 @@ package Model.Interface;
 
 /**
  *
- * @author CCK
+ * @author GJH
  */
 public interface Updatable {
 

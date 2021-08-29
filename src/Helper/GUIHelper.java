@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author CCK
+ * @author GJH
  */
 public class GUIHelper {
 
@@ -31,22 +31,5 @@ public class GUIHelper {
         parent.setVisible(false);
     }
 
-    /**
-     * Ask the customer really want to exit ?
-     */
-    public void exitSoftware() {
-        final JFrame parent = new JFrame();
-        final int showConfirmDialog = JOptionPane.showConfirmDialog(parent, "Are you sure you want to exit ?",
-                "Exit Confirmation", 1);
 
-        switch (showConfirmDialog) {
-            case 0:
-                System.exit(0);
-                break;
-            case 1:
-            case 2:
-                parent.setVisible(false);
-                break;
-        }
-    }
 }

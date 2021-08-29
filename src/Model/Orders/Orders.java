@@ -5,12 +5,13 @@
  */
 package Model.Orders;
 
+import Helper.BinarySearch;
 import Model.Interface.Creatable;
 import Model.Interface.Updatable;
 import Model.Interface.Queryable;
 import Model.Interface.Validable;
 import Helper.Connection;
-import Model.User.Customers;
+import Model.User.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,19 +23,21 @@ import java.util.List;
 public class Orders implements Updatable, Validable, Queryable {
        
     private int ID;
-    private Customers customer;
+    private User user;
     private Double totalAmount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private boolean isDeleted;
     private final Connection reader = new Connection("/orders/orders");
     
-    public Orders(int ID, Customers customer, Double totalAmount, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Orders(int ID, User user, Double totalAmount, LocalDateTime createdAt, LocalDateTime updatedAt, boolean isDeleted) {
         this.ID = ID;
-        this.customer = customer;
+        this.user = user;
         this.totalAmount = totalAmount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        
+        this.isDeleted = isDeleted;
+      
     }
     public Orders() {
     }
@@ -42,13 +45,12 @@ public class Orders implements Updatable, Validable, Queryable {
     public int getID() {
         return ID;
     }
-    public Customers getCustomer() {
-         System.out.println(customer);
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customers customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
     public Double getTotalAmount() {
         return totalAmount;
@@ -72,7 +74,16 @@ public class Orders implements Updatable, Validable, Queryable {
     public void setUpdateAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-        public Connection getReader() {
+    
+    public boolean getIsdeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public Connection getReader() {
         return reader;
     }
 
@@ -83,7 +94,7 @@ public class Orders implements Updatable, Validable, Queryable {
             case "id":
                 i = 0;
                 break;
-            case "customer_id":
+            case "user_id":
                 i = 1;
                 break;
             case "totalAmount":
@@ -95,6 +106,9 @@ public class Orders implements Updatable, Validable, Queryable {
             case "updatedAt":
                 i = 4;
                 break;
+            case "isDeleted":
+                i = 5;
+                break;
             case "order_id":
                 i = 0;
                 break;
@@ -103,21 +117,20 @@ public class Orders implements Updatable, Validable, Queryable {
                 break;
         }
         List<String> fromFile = reader.getFromFile();
-        for (int j = 1; j < fromFile.size(); j++) {
-            String[] split = fromFile.get(j).split(",");
-            if (split[i].equals(queryString)) {
-                Orders order = new Orders(
-                        Integer.valueOf(split[0]),
-                        new Customers().where("id", split[1]),
-                        Double.valueOf(split[2]),
-                        LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4])            
-                );
-
-                return order;   
-            }
+        String[] result = new BinarySearch().bsearch(fromFile, 1, fromFile.size() - 1, Integer.parseInt(queryString), i);
+        if (result == null) {
+            return null;
         }
-        return null;
+        Orders order = new Orders(
+                Integer.valueOf(result[0]),
+                new User().where("id", result[1]),
+                Double.valueOf(result[2]),
+                LocalDateTime.parse(result[3]),
+                LocalDateTime.parse(result[4]),           
+                Boolean.parseBoolean(result[5])     
+        );
+
+        return order;   
     }
     
     public int create() {
@@ -128,6 +141,8 @@ public class Orders implements Updatable, Validable, Queryable {
         return reader.getNewID();
     }
     
+
+    
     @Override
     public ArrayList<Orders> where(String type, String queryOperator, String queryString) {
         int i = 0;
@@ -135,7 +150,7 @@ public class Orders implements Updatable, Validable, Queryable {
             case "id":
                 i = 0;
                 break;
-            case "customer_id":
+            case "user_id":
                 i = 1;
                 break;
             case "totalAmount":
@@ -147,6 +162,9 @@ public class Orders implements Updatable, Validable, Queryable {
             case "updatedAt":
                 i = 4;
                 break;
+            case "isDeleted":
+                i = 5;
+                break;
             default:
                 System.out.println("Type not specificied");
                 break;
@@ -155,144 +173,84 @@ public class Orders implements Updatable, Validable, Queryable {
         ArrayList<Orders> temp = new ArrayList();
         List<String> fromFile = reader.getFromFile();
 
-        if ((i == 0) || (i == 1)) {
             int query = Integer.valueOf(queryString);
             for (int j = 1; j < fromFile.size(); j++) {
                 String[] split = fromFile.get(j).split(",");
                 Double queryInFile = Double.valueOf(split[i]);
-                switch (queryOperator.toLowerCase()) {
-                    case ">":
-                        if (queryInFile > query) {
-                            temp.add(new Orders(
-                        Integer.valueOf(split[0]),
-                        new Customers().where("customer_id", split[1]),
-                        Double.valueOf(split[2]),
-                        LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4])
-                            ));
-                        }
-                        break;
-                    case ">=":
-                        if (queryInFile >= query) {
-                            Orders order = new Orders(
-                        Integer.valueOf(split[0]),
-                        new Customers().where("customer_id", split[1]),
-                        Double.valueOf(split[2]),
-                        LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4])
-                            );
-                            temp.add(order);
-                        }
-                        break;
-                    case "<":
-                        if (queryInFile < query) {
-                            temp.add(new Orders(
-                        Integer.valueOf(split[0]),
-                        new Customers().where("customer_id", split[1]),
-                        Double.valueOf(split[2]),
-                        LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4])
-                            ));
-                        }
-                        break;
-                    case "<=":
-                        if (queryInFile <= query) {
-                            temp.add(new Orders(
-                        Integer.valueOf(split[0]),
-                        new Customers().where("customer_id", split[1]),
-                        Double.valueOf(split[2]),
-                        LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4])
-                            ));
-                        }
-                        break;
-                    case "=":
-                    case "==":
-                    case "===":
-                        if (queryInFile == query) {
-                            temp.add(new Orders(
-                        Integer.valueOf(split[0]),
-                        new Customers().where("customer_id", split[1]),
-                        Double.valueOf(split[2]),
-                        LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4])
-                            ));
-                        }
-                        break;
+                if (!Boolean.parseBoolean(split[5])) {
+                    switch (queryOperator.toLowerCase()) {
+                        case ">":
+                            if (queryInFile > query) {
+                                temp.add(new Orders(
+                            Integer.valueOf(split[0]),
+                            new User().where("id", split[1]),
+                            Double.valueOf(split[2]),
+                            LocalDateTime.parse(split[3]),
+                            LocalDateTime.parse(split[4]),
+                            Boolean.parseBoolean(split[5])     
+                                ));
+                            }
+                            break;
+                        case ">=":
+                            if (queryInFile >= query) {
+                                Orders order = new Orders(
+                            Integer.valueOf(split[0]),
+                            new User().where("id", split[1]),
+                            Double.valueOf(split[2]),
+                            LocalDateTime.parse(split[3]),
+                            LocalDateTime.parse(split[4]),
+                            Boolean.parseBoolean(split[5])     
+                                );
+                                temp.add(order);
+                            }
+                            break;
+                        case "<":
+                            if (queryInFile < query) {
+                                temp.add(new Orders(
+                            Integer.valueOf(split[0]),
+                            new User().where("id", split[1]),
+                            Double.valueOf(split[2]),
+                            LocalDateTime.parse(split[3]),
+                            LocalDateTime.parse(split[4]),
+                            Boolean.parseBoolean(split[5])     
+                                ));
+                            }
+                            break;
+                        case "<=":
+                            if (queryInFile <= query) {
+                                temp.add(new Orders(
+                            Integer.valueOf(split[0]),
+                            new User().where("id", split[1]),
+                            Double.valueOf(split[2]),
+                            LocalDateTime.parse(split[3]),
+                            LocalDateTime.parse(split[4]),
+                            Boolean.parseBoolean(split[5])     
+                                ));
+                            }
+                            break;
+                        case "=":
+                        case "==":
+                        case "===":
+                            if (queryInFile == query) {
+                                temp.add(new Orders(
+                            Integer.valueOf(split[0]),
+                            new User().where("id", split[1]),
+                            Double.valueOf(split[2]),
+                            LocalDateTime.parse(split[3]),
+                            LocalDateTime.parse(split[4]),
+                            Boolean.parseBoolean(split[5])     
+                                ));
+                            }
+                            break;
+                    }
                 }
             }
-        }
-        if ((i == 2) || (i == 3)) {
-            LocalDateTime queryTime = LocalDateTime.parse(queryString);
-            for (int j = 1; j < fromFile.size(); j++) {
-                String[] split = fromFile.get(j).split(",");
-                LocalDateTime fileTime = LocalDateTime.parse(split[i]);
-                switch (queryOperator.toLowerCase()) {
-                    case ">":
-                        if (fileTime.isAfter(queryTime)) {
-                            temp.add(new Orders(
-                        Integer.valueOf(split[0]),
-                        new Customers().where("customer_id", split[1]),
-                        Double.valueOf(split[2]),
-                        LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4])
-                            ));
-                        }
 
-                        break;
-                    case ">=":
-                        if (fileTime.isAfter(queryTime) || fileTime.isEqual(queryTime)) {
-                            temp.add(new Orders(
-                        Integer.valueOf(split[0]),
-                        new Customers().where("customer_id", split[1]),
-                        Double.valueOf(split[2]),
-                        LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4])
-                            ));
-                        }
-                        break;
-                    case "<":
-                        if (fileTime.isBefore(queryTime)) {
-                            temp.add(new Orders(
-                        Integer.valueOf(split[0]),
-                        new Customers().where("customer_id", split[1]),
-                        Double.valueOf(split[2]),
-                        LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4])
-                            ));
-                        }
-                        break;
-                    case "<=":
-                        if (fileTime.isBefore(queryTime) || fileTime.isEqual(queryTime)) {
-                            temp.add(new Orders(
-                        Integer.valueOf(split[0]),
-                        new Customers().where("customer_id", split[1]),
-                        Double.valueOf(split[2]),
-                        LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4])
-                            ));
-                        }
-                        break;
-                    case "=":
-                    case "==":
-                    case "===":
-                        if (fileTime.isEqual(queryTime)) {
-                            temp.add(new Orders(
-                        Integer.valueOf(split[0]),
-                        new Customers().where("id", split[1]),
-                        Double.valueOf(split[2]),
-                        LocalDateTime.parse(split[3]),
-                        LocalDateTime.parse(split[4])
-                            ));
-                        }
-                        break;
-                }
-            }
-        }
         return temp;
 
     }
 
+    
     @Override
     public boolean update() {
         List<String> fromFile = reader.getFromFile();
@@ -308,11 +266,11 @@ public class Orders implements Updatable, Validable, Queryable {
     
     private String format(boolean isCreating) {
         
-        String userId = this.customer == null ? "0" : String.valueOf(this.customer.getID());
+        String userId = this.user == null ? "0" : String.valueOf(this.user.getId());
 
         return isCreating
-                ? reader.getNewID() + "," + userId + "," + this.totalAmount + "," + this.createdAt + "," + this.updatedAt
-                : this.getID() + "," + userId + "," + this.totalAmount + "," + this.createdAt + "," + this.updatedAt;
+                ? reader.getNewID() + "," + userId + "," + this.totalAmount + "," + this.createdAt + "," + this.updatedAt + "," + this.isDeleted
+                : this.getID() + "," + userId + "," + this.totalAmount + "," + this.createdAt + "," + this.updatedAt + "," + this.isDeleted;
     }
 
 }

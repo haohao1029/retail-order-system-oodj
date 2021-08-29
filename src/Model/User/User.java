@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  *
- * @author CCK
+ * @author GJH
  */
 public class User extends Model {
 
@@ -71,7 +71,9 @@ public class User extends Model {
     }
 
     public User(int id) {
+        // find user from database
         List<String> fromFile = reader.getFromFile();
+
         for (int i = 1; i < fromFile.size(); i++) {
             String split[] = fromFile.get(i).split(",");
             if (Integer.valueOf(split[0]) == id) {

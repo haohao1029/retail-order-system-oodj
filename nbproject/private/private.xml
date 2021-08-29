@@ -3,17 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/db/users/customers.csv</file>
-            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/db/orders/orderitems.csv</file>
-            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/GUI/Login.java</file>
-            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/Model/OrderItems/OrderItems.java</file>
-            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/GUI/Register.java</file>
+            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/Model/Products/Products.java</file>
+            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/db/users/users.csv</file>
+            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/Model/User/Customers.java</file>
+            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/Model/Feedback/Feedback.java</file>
             <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/Model/User/Admin.java</file>
-            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/GUI/Admin/ManageOrders.java</file>
-            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/retail/order/system/RETAILORDERSYSTEM.java</file>
-            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/Model/Orderitem/OrderItem.java</file>
-            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/db/products.csv</file>
+            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/GUI/User/UserDirectory.java</file>
+            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/Model/Report/Report.java</file>
+            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/Model/Orders/Orders.java</file>
+            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/Helper/BinarySearch.java</file>
             <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/db/users/admin.csv</file>
+            <file>file:/home/ubuntu/NetBeansProjects/RETAIL%20ORDER%20SYSTEM/src/Model/User/User.java</file>
         </group>
     </open-files>
 </project-private>

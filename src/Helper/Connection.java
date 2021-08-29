@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  *
- * @author CCK
+ * @author GJH
  */
 public class Connection {
 

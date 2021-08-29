@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author ashwe
+ * @author GJH
  */
 public class CreateProduct extends javax.swing.JFrame {
 
@@ -261,14 +261,15 @@ public class CreateProduct extends javax.swing.JFrame {
             u.setPrice(price);
             u.setCreatedAt(time);
             u.setUpdatedAt(time);
-            System.out.print(u);
+            u.setSales(0);
+            u.setIsDeleted(false);
             if (u.create()) {
                JOptionPane.showMessageDialog(null, "Created !");
                new ManageProducts().setVisible(true);
                this.dispose();
                return;
             } else {
-                        JOptionPane.showMessageDialog(null, "Create Error!");
+               JOptionPane.showMessageDialog(null, "Create Error!");
             }
     }//GEN-LAST:event_jButton1ActionPerformed
 

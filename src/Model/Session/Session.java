@@ -12,7 +12,7 @@ import Model.User.User;
 
 /**
  *
- * @author CCK
+ * @author GJH
  */
 public class Session {
 
@@ -29,11 +29,12 @@ public class Session {
         return new User().where("id", this.getID());
     }
 
-    public Admin getManagingStaff() {
+    public Admin getAdmin() {
         return new Admin().where("user_id", this.getID());
     }
     public Customers getCustomer() {
-        return new Customers().where("user_id", this.getID());
+        Customers c = new Customers().where("user_id", this.getID());
+        return c;
     }
 
     private String getID() {

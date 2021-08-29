@@ -12,7 +12,7 @@ import Model.Interface.Validable;
 
 /**
  *
- * @author CCK
+ * @author GJH
  */
 abstract public class Model implements Queryable, Creatable, Updatable, Validable {
 

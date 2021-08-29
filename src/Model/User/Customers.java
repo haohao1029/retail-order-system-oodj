@@ -5,8 +5,8 @@
  */
 package Model.User;
 
+import Helper.BinarySearch;
 import Helper.Connection;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -68,9 +68,16 @@ public class Customers extends User{
             }
 
         }
-        return null;
+        String[] result = new BinarySearch().bsearch(fromFile, 1, fromFile.size() - 1, Integer.parseInt(queryString), i);
+        if (result == null) {
+            return null;
+        } 
+        return new Customers(Integer.valueOf(result[0]),
+                                new User().where("id", result[1])
+                        );
     }
-        @Override
+    
+    @Override
     public boolean create() {
         List<String> fromFile = con.getFromFile();
 

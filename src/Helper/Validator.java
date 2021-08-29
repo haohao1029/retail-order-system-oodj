@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author CCK
+ * @author GJH
  */
 public class Validator {
 
