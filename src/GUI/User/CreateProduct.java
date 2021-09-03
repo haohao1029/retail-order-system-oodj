@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author GJH
+ * @author CYH
  */
 public class CreateProduct extends javax.swing.JFrame {
 

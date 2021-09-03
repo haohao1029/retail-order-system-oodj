@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author GJH
+ * @author CYH
  */
 public class GUIHelper {
 

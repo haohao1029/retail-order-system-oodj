@@ -6,6 +6,7 @@
 package GUI.Admin;
 
 import GUI.Login;
+import GUI.User.OrderHistory;
 import Model.Orders.Orders;
 import Model.OrderItems.OrderItems;
 import Model.Products.Products;
@@ -20,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import Model.Session.Session;
 /**
  *
- * @author GJH
+ * @author CYH
  */
 public class CustomerProducts extends javax.swing.JFrame {
     
@@ -484,7 +485,7 @@ public class CustomerProducts extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        new ManageOrders().setVisible(true);
+        new OrderHistory().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 

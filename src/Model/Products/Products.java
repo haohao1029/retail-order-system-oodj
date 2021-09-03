@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  *
- * @author GJH
+ * @author CYH & GJH
  */
 public class Products implements Creatable, Deletable, Updatable, Validable, Queryable {
 

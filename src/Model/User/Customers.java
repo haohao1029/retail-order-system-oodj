@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  *
- * @author GJH
+ * @author CYH & GJH
  */
 public class Customers extends User{
     private int ID;
@@ -59,15 +59,7 @@ public class Customers extends User{
                 break;
         }
         List<String> fromFile = con.getFromFile();
-        for (int j = 1; j < fromFile.size(); j++) {
-            String[] split = fromFile.get(j).split(",");
-            if (split[i].equals(String.valueOf(queryString))) {
-                return new Customers(Integer.valueOf(split[0]),
-                        new User().where("id", split[1])
-                );
-            }
 
-        }
         String[] result = new BinarySearch().bsearch(fromFile, 1, fromFile.size() - 1, Integer.parseInt(queryString), i);
         if (result == null) {
             return null;

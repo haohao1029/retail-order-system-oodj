@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 /**
  *
- * @author ubuntu
+ * @author GJH
  */
 public class PDFHelper {
         private String fileName;

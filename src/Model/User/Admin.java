@@ -5,13 +5,14 @@
  */
 package Model.User;
 
+import Helper.BinarySearch;
 import Helper.Connection;
 import Helper.Validator;
 import java.util.List;
 
 /**
  *
- * @author GJH
+ * @author CYH & GJH
  */
 public class Admin extends User {
 
@@ -91,16 +92,13 @@ public class Admin extends User {
         }
 
         List<String> fromFile = con.getFromFile();
-        for (int j = 1; j < fromFile.size(); j++) {
-            String[] split = fromFile.get(j).split(",");
-            if (split[i].equals(String.valueOf(queryString))) {
-                return new Admin(Integer.valueOf(split[0]), split[1], Double.valueOf(split[2]),
-                        new User().where("id", split[3])
+                String[] result = new BinarySearch().bsearch(fromFile, 1, fromFile.size() - 1, Integer.parseInt(queryString), i);
+        if (result == null) {
+            return null;
+        } 
+ return new Admin(Integer.valueOf(result[0]), result[1], Double.valueOf(result[2]),
+                        new User().where("id", result[3])
                 );
-            }
-
-        }
-        return null;
     }
 
     @Override

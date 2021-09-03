@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author GJH
+ * @author CYH
  */
 public class UserDirectory extends javax.swing.JFrame {
 

@@ -17,7 +17,7 @@ import Model.User.User;
 
 /**
  *
- * @author GJH
+ * @author CYH
  */
 public class Login extends javax.swing.JFrame {
 

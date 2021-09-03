@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  *
- * @author GJH
+ * @author CYH & GJH
  */
 public class User extends Model {
 
@@ -164,11 +164,11 @@ public class User extends Model {
             return false;
         }
 
-        List<String> dbLine = reader.getFromFile();
+        List<String> fromFile = reader.getFromFile();
         String hashedPassword = getHash(this.password.getBytes());
 
-        for (int i = 0; i < dbLine.size(); i++) {
-            String split[] = dbLine.get(i).split(",");
+        for (int i = 0; i < fromFile.size(); i++) {
+            String split[] = fromFile.get(i).split(",");
             if (split[3].equals(email) && split[2].equals(hashedPassword)) {
                 this.id = Integer.valueOf(split[0]);
                 this.name = split[1];
@@ -203,9 +203,9 @@ public class User extends Model {
             return false;
         }
 
-        List<String> dbLine = reader.getFromFile();
-        for (int i = 1; i < dbLine.size(); i++) {
-            String split[] = dbLine.get(i).split(",");
+        List<String> fromFile = reader.getFromFile();
+        for (int i = 1; i < fromFile.size(); i++) {
+            String split[] = fromFile.get(i).split(",");
             if (split[3].equals(email)) {
                 //Email exits in database, hence cannot register this guy
                 System.out.println("Email exist !");
@@ -213,8 +213,8 @@ public class User extends Model {
             }
         }
 
-        dbLine.add(this.format(true));
-        return reader.reWrite(reader.listToString(dbLine));
+        fromFile.add(this.format(true));
+        return reader.reWrite(reader.listToString(fromFile));
     }
 
     /**
@@ -238,9 +238,9 @@ public class User extends Model {
             return false;
         }
 
-        List<String> dbLine = reader.getFromFile();
-        dbLine.set(this.id, this.format(false));
-        return reader.reWrite(reader.listToString(dbLine));
+        List<String> fromFile = reader.getFromFile();
+        fromFile.set(this.id, this.format(false));
+        return reader.reWrite(reader.listToString(fromFile));
     }
 
     /**

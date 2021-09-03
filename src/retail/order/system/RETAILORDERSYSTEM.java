@@ -23,7 +23,7 @@ public class RETAILORDERSYSTEM {
         new Login().setVisible(true);
         //new ManageProducts().setVisible(true);
         //new CustomerProducts().setVisible(true);
-        new ManageOrders().setVisible(true);
+        //new ManageOrders().setVisible(true);
     }
     
 }
